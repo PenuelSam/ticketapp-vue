@@ -20,6 +20,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:modelValue', value: TicketInput): void
   (e: 'submit'): void
+  (e: 'cancel'): void
 }>()
 
 const state = reactive({
@@ -42,9 +43,13 @@ watch(
   { deep: true }
 )
 
-watch(state, () => {
-  emit('update:modelValue', { ...state })
-}, { deep: true })
+watch(
+  state,
+  () => {
+    emit('update:modelValue', { ...state })
+  },
+  { deep: true }
+)
 
 function validate() {
   Object.assign(errors, { title: undefined, status: undefined, description: undefined })
@@ -66,11 +71,7 @@ const heading = computed(() => props.title || 'Ticket')
     <!-- TITLE -->
     <div class="field">
       <label for="title">Title</label>
-      <input
-        id="title"
-        v-model="state.title"
-        placeholder="Brief ticket summary"
-      />
+      <input id="title" v-model="state.title" placeholder="Brief ticket summary" />
       <span v-if="errors.title" class="field-error">{{ errors.title }}</span>
     </div>
 
@@ -91,7 +92,7 @@ const heading = computed(() => props.title || 'Ticket')
         <label for="status">Status</label>
         <select id="status" v-model="state.status">
           <option value="open">Open</option>
-          <option value="in_progress">In progress</option>
+          <option value="in_progress">In Progress</option>
           <option value="closed">Closed</option>
         </select>
         <span v-if="errors.status" class="field-error">{{ errors.status }}</span>
@@ -117,3 +118,37 @@ const heading = computed(() => props.title || 'Ticket')
   </form>
 </template>
 
+<style scoped>
+/* Align status and priority side-by-side */
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.form-row .field {
+  flex: 1;
+}
+
+/* Align action buttons to the right with spacing */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Ensure form stays visually clean */
+.field select {
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+.field select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: #fff;
+}
+</style>

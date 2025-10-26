@@ -14,14 +14,38 @@ export interface Ticket extends TicketInput {
   updatedAt: string
 }
 
+// Load and save helpers
+function loadTickets(): Ticket[] {
+  try {
+    const raw = localStorage.getItem('ticketapp_tickets')
+    const data = raw ? JSON.parse(raw) : []
+    return Array.isArray(data) ? data : []
+  } catch {
+    return []
+  }
+}
+
+function saveTickets(tickets: Ticket[]) {
+  localStorage.setItem('ticketapp_tickets', JSON.stringify(tickets))
+}
+
 export const useTickets = defineStore('tickets', {
+  // Always return a fresh array instance (prevents stale reactive state)
   state: () => ({
-    tickets: JSON.parse(localStorage.getItem('ticketapp_tickets') || '[]') as Ticket[]
+    tickets: loadTickets() as Ticket[]
   }),
+
+  getters: {
+    all: (state) => state.tickets,
+    open: (state) => state.tickets.filter((t) => t.status === 'open'),
+    closed: (state) => state.tickets.filter((t) => t.status === 'closed')
+  },
+
   actions: {
     create(input: TicketInput) {
       const errors = validateTicket(input)
       if (Object.keys(errors).length) throw errors
+
       const now = new Date().toISOString()
       const ticket: Ticket = {
         id: crypto.randomUUID(),
@@ -29,27 +53,37 @@ export const useTickets = defineStore('tickets', {
         createdAt: now,
         updatedAt: now
       }
-      this.tickets.push(ticket)
-      localStorage.setItem('ticketapp_tickets', JSON.stringify(this.tickets))
+
+      // ✅ Create a brand-new array each time (no .push)
+      const updated = [...(this.tickets ?? []), ticket]
+      this.tickets = updated
+      saveTickets(updated)
     },
+
     update(id: string, input: TicketInput) {
       const errors = validateTicket(input)
       if (Object.keys(errors).length) throw errors
-      this.tickets = this.tickets.map((t) =>
+
+      const updated = (this.tickets ?? []).map((t) =>
         t.id === id
-          ? {
-              ...t,
-              ...input,
-              updatedAt: new Date().toISOString()
-            }
+          ? { ...t, ...input, updatedAt: new Date().toISOString() }
           : t
       )
-      localStorage.setItem('ticketapp_tickets', JSON.stringify(this.tickets))
+
+      this.tickets = updated
+      saveTickets(updated)
     },
+
     remove(id: string) {
       if (!confirm('Delete this ticket?')) return
-      this.tickets = this.tickets.filter((t) => t.id !== id)
-      localStorage.setItem('ticketapp_tickets', JSON.stringify(this.tickets))
+      const updated = (this.tickets ?? []).filter((t) => t.id !== id)
+      this.tickets = updated
+      saveTickets(updated)
+    },
+
+    reset() {
+      this.tickets = []
+      saveTickets([])
     }
   }
 })

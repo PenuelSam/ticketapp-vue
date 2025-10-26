@@ -1,32 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
 import Button from './Button.vue'
 import { useAuth } from '../features/auth/useAuth'
 
-const router = useRouter()
-const route = useRoute()
 const { logout, isAuthenticated, getSession } = useAuth()
-
+const router = useRouter()
 const menuOpen = ref(false)
-const authed = computed(() => isAuthenticated())
-const session = computed(() => (authed.value ? getSession() : null))
+
+const authed = isAuthenticated()
+const user = authed ? getSession() : null
 
 function handleLogout() {
   logout()
   router.push('/')
-}
-
-function toggleMenu() {
-  menuOpen.value = !menuOpen.value
-}
-
-function closeMenu() {
-  menuOpen.value = false
-}
-
-function isActive(to: string) {
-  return route.path === to || route.path.startsWith(`${to}/`)
 }
 </script>
 
@@ -36,38 +23,27 @@ function isActive(to: string) {
       <div class="nav-brand">
         <RouterLink to="/" class="nav-logo">TicketFlow</RouterLink>
 
-        <!-- Simple text toggle instead of icons -->
         <button
           class="nav-toggle"
-          @click="toggleMenu"
+          @click="menuOpen = !menuOpen"
           aria-label="Toggle menu"
         >
-          {{ menuOpen ? 'Close' : 'Menu' }}
+          <span v-if="menuOpen" style="font-size: 1.5rem;">✖</span>
+          <span v-else style="font-size: 1.5rem;">☰</span>
         </button>
       </div>
 
       <div class="nav-links" :class="{ open: menuOpen }">
         <template v-if="authed">
-          <RouterLink
-            to="/dashboard"
-            :class="{ active: isActive('/dashboard') }"
-            @click="closeMenu"
-          >
-            Dashboard
-          </RouterLink>
+          <RouterLink to="/dashboard" @click="menuOpen = false">Dashboard</RouterLink>
+          <RouterLink to="/tickets" @click="menuOpen = false">Tickets</RouterLink>
 
-          <RouterLink
-            to="/tickets"
-            :class="{ active: isActive('/tickets') }"
-            @click="closeMenu"
-          >
-            Tickets
-          </RouterLink>
+          <!-- User Icon -->
+          <div class="nav-user" title="User">
+            <span style="font-size: 1rem;">👤</span>
+          </div>
 
-          <!-- Removed user icon -->
-          <span class="nav-user-label">{{ session?.user?.email || 'User' }}</span>
-
-          <Button variant="ghost" type="button" @click="handleLogout">
+          <Button variant="ghost" @click="handleLogout">
             Logout
           </Button>
         </template>
@@ -76,7 +52,7 @@ function isActive(to: string) {
           <RouterLink
             to="/auth/login"
             class="button button-secondary"
-            @click="closeMenu"
+            @click="menuOpen = false"
           >
             Log in
           </RouterLink>
@@ -87,24 +63,8 @@ function isActive(to: string) {
 </template>
 
 <style scoped>
-.nav-user-label {
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.nav-toggle {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.8rem;
-  font-weight: 600;
-  color: var(--text-strong);
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.nav-toggle:hover {
-  background: var(--brand-soft);
+.nav-toggle span {
+  display: block;
+  line-height: 1;
 }
 </style>
