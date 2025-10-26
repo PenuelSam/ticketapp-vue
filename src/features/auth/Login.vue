@@ -42,35 +42,51 @@ const showExpired = reason === 'expired'
 </script>
 
 <template>
-  <div>
+  <div class="layout">
     <Nav />
-    <section class="section">
-      <div class="container" style="max-width: 480px;">
+    <main class="layout-main auth-main">
+      <div class="container auth-container">
         <Card>
-          <h2>Welcome back</h2>
-          <p v-if="showExpired" class="form-error">Your session expired. Please login again.</p>
-          <p v-if="general" class="form-error">{{ general }}</p>
-          <form class="grid" style="gap: 1.5rem;" @submit.prevent="onSubmit">
-            <div class="form-group">
+          <h1 class="auth-title">Welcome back</h1>
+          <p class="auth-subtitle">Log in to continue managing your tickets.</p>
+
+          <form class="form" @submit.prevent="onSubmit" novalidate>
+            <div class="field">
               <label for="email">Email</label>
-              <input id="email" v-model="form.email" type="email" placeholder="you@example.com" autocomplete="email" />
-              <span v-if="errors.email" class="form-error">{{ errors.email }}</span>
+              <input
+                id="email"
+                type="email"
+                v-model="form.email"
+                placeholder="you@example.com"
+                autocomplete="email"
+              />
+              <span v-if="errors.email" class="field-error">{{ errors.email }}</span>
             </div>
-            <div class="form-group">
+
+            <div class="field">
               <label for="password">Password</label>
-              <input id="password" v-model="form.password" type="password" placeholder="••••••••" autocomplete="current-password" />
-              <span v-if="errors.password" class="form-error">{{ errors.password }}</span>
+              <input
+                id="password"
+                type="password"
+                v-model="form.password"
+                placeholder="••••••"
+                autocomplete="current-password"
+              />
+              <span v-if="errors.password" class="field-error">{{ errors.password }}</span>
             </div>
-            <Button type="submit" :disabled="loading" :aria-busy="loading">
-              {{ loading ? 'Signing in...' : 'Login' }}
+
+            <Button type="submit" variant="primary" fullWidth :disabled="loading">
+              {{ loading ? 'Signing in...' : 'Log In' }}
             </Button>
-            <p style="margin: 0; color: var(--muted);">
-              Need an account?
-              <RouterLink to="/auth/signup">Create one</RouterLink>
-            </p>
           </form>
+
+          <p class="auth-footer">
+            Need an account?
+            <RouterLink to="/auth/signup">Sign up</RouterLink>
+          </p>
         </Card>
       </div>
-    </section>
+    </main>
   </div>
 </template>
+

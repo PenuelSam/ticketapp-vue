@@ -58,26 +58,39 @@ function goBack() {
 </script>
 
 <template>
-  <div>
+  <div class="layout">
     <Nav />
-    <section class="section">
+    <main class="layout-main">
       <div class="container" style="max-width: 720px;">
-        <div v-if="!ticket">
-          <Card>
-            <h2 style="margin-top: 0;">Ticket not found</h2>
-            <p style="color: var(--muted);">The requested ticket could not be located.</p>
-            <Button type="button" @click="goBack">Back to tickets</Button>
-          </Card>
-        </div>
-        <div v-else class="grid" style="gap: 1.5rem;">
-          <Button variant="ghost" type="button" @click="goBack">← Back to tickets</Button>
-          <TicketForm v-model="model" :loading="saving" title="Edit ticket" @submit="handleSubmit">
+        <Card v-if="!ticket">
+          <h1>Ticket not found</h1>
+          <p style="color: var(--text-muted);">
+            The ticket you are looking for may have been removed.
+          </p>
+          <Button variant="secondary" @click="goBack">Back to tickets</Button>
+        </Card>
+
+        <Card v-else>
+          <div class="ticket-edit-header">
+            <div>
+              <h1>Edit ticket</h1>
+              <p>Update the ticket details and save to keep everyone informed.</p>
+            </div>
+            <Button variant="ghost" @click="goBack">Close</Button>
+          </div>
+          <TicketForm
+            v-model="model"
+            :loading="saving"
+            title="Edit ticket"
+            @submit="handleSubmit"
+          >
             <template #submit>
-              {{ saving ? 'Saving...' : 'Save Changes' }}
+              {{ saving ? 'Saving...' : 'Save changes' }}
             </template>
           </TicketForm>
-        </div>
+        </Card>
       </div>
-    </section>
+    </main>
   </div>
 </template>
+

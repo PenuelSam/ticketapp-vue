@@ -62,44 +62,58 @@ const heading = computed(() => props.title || 'Ticket')
 </script>
 
 <template>
-  <Card>
-    <form class="grid" style="gap: 1.5rem;" @submit.prevent="handleSubmit">
-      <header>
-        <h3 style="margin: 0 0 0.5rem;">{{ heading }}</h3>
-        <p style="margin: 0; color: var(--muted);">Update the ticket details below.</p>
-      </header>
-      <div class="form-group">
-        <label for="ticket-title">Title</label>
-        <input id="ticket-title" v-model="state.title" placeholder="Ticket subject" />
-        <span v-if="errors.title" class="form-error">{{ errors.title }}</span>
+  <form class="form" @submit.prevent="handleSubmit" novalidate>
+    <!-- TITLE -->
+    <div class="field">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        v-model="state.title"
+        placeholder="Brief ticket summary"
+      />
+      <span v-if="errors.title" class="field-error">{{ errors.title }}</span>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        v-model="state.description"
+        placeholder="Describe the issue or request"
+      />
+      <span v-if="errors.description" class="field-error">{{ errors.description }}</span>
+    </div>
+
+    <!-- STATUS & PRIORITY -->
+    <div class="form-row">
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" v-model="state.status">
+          <option value="open">Open</option>
+          <option value="in_progress">In progress</option>
+          <option value="closed">Closed</option>
+        </select>
+        <span v-if="errors.status" class="field-error">{{ errors.status }}</span>
       </div>
-      <div class="form-group">
-        <label for="ticket-description">Description</label>
-        <textarea id="ticket-description" v-model="state.description" placeholder="Describe the issue" />
-        <span v-if="errors.description" class="form-error">{{ errors.description }}</span>
+
+      <div class="field">
+        <label for="priority">Priority</label>
+        <select id="priority" v-model="state.priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
       </div>
-      <div class="grid" style="gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-        <div class="form-group">
-          <label for="ticket-status">Status</label>
-          <select id="ticket-status" v-model="state.status">
-            <option value="open">Open</option>
-            <option value="in_progress">In Progress</option>
-            <option value="closed">Closed</option>
-          </select>
-          <span v-if="errors.status" class="form-error">{{ errors.status }}</span>
-        </div>
-        <div class="form-group">
-          <label for="ticket-priority">Priority</label>
-          <select id="ticket-priority" v-model="state.priority">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-      </div>
-      <Button type="submit" :disabled="props.loading" :aria-busy="props.loading">
-        <slot name="submit">{{ props.loading ? 'Saving...' : 'Save Ticket' }}</slot>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <Button type="button" variant="ghost" @click="$emit('cancel')">Cancel</Button>
+      <Button type="submit" variant="primary">
+        <slot name="submit">{{ props.loading ? 'Saving...' : 'Create Ticket' }}</slot>
       </Button>
-    </form>
-  </Card>
+    </div>
+  </form>
 </template>
+

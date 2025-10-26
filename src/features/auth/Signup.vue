@@ -44,38 +44,63 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div>
+  <div class="layout">
     <Nav />
-    <section class="section">
-      <div class="container" style="max-width: 480px;">
+    <main class="layout-main auth-main">
+      <div class="container auth-container">
         <Card>
-          <h2>Create your account</h2>
-          <form class="grid" style="gap: 1.5rem;" @submit.prevent="onSubmit">
-            <div class="form-group">
+          <h1 class="auth-title">Create your workspace</h1>
+          <p class="auth-subtitle">Sign up to start tracking support tickets.</p>
+
+          <form class="form" @submit.prevent="onSubmit" novalidate>
+            <div class="field">
               <label for="email">Email</label>
-              <input id="email" v-model="form.email" type="email" placeholder="you@example.com" autocomplete="email" />
-              <span v-if="errors.email" class="form-error">{{ errors.email }}</span>
+              <input
+                id="email"
+                type="email"
+                v-model="form.email"
+                placeholder="you@example.com"
+                autocomplete="email"
+              />
+              <span v-if="errors.email" class="field-error">{{ errors.email }}</span>
             </div>
-            <div class="form-group">
+
+            <div class="field">
               <label for="password">Password</label>
-              <input id="password" v-model="form.password" type="password" autocomplete="new-password" />
-              <span v-if="errors.password" class="form-error">{{ errors.password }}</span>
+              <input
+                id="password"
+                type="password"
+                v-model="form.password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+              />
+              <span v-if="errors.password" class="field-error">{{ errors.password }}</span>
             </div>
-            <div class="form-group">
+
+            <div class="field">
               <label for="confirm">Confirm password</label>
-              <input id="confirm" v-model="form.confirm" type="password" autocomplete="new-password" />
-              <span v-if="errors.confirm" class="form-error">{{ errors.confirm }}</span>
+              <input
+                id="confirm"
+                type="password"
+                v-model="form.confirm"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+              />
+              <span v-if="errors.confirm" class="field-error">{{ errors.confirm }}</span>
             </div>
-            <Button type="submit" :disabled="loading" :aria-busy="loading">
-              {{ loading ? 'Creating account...' : 'Sign Up' }}
+
+            <Button type="submit" variant="primary" fullWidth :disabled="loading">
+              {{ loading ? 'Creating account...' : 'Create account' }}
             </Button>
-            <p style="margin: 0; color: var(--muted);">
-              Already registered?
-              <RouterLink to="/auth/login">Login</RouterLink>
-            </p>
           </form>
+
+          <p class="auth-footer">
+            Already have an account?
+            <RouterLink to="/auth/login">Log in</RouterLink>
+          </p>
         </Card>
       </div>
-    </section>
+    </main>
   </div>
 </template>
+

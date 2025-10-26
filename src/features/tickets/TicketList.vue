@@ -69,69 +69,71 @@ const hasTickets = computed(() => tickets.value.length > 0)
 </script>
 
 <template>
-  <div>
+  <div class="layout">
     <Nav />
-    <section class="section">
+    <main class="layout-main">
       <div class="container">
-        <header class="grid" style="gap: 1rem; align-items: center; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+        <div class="ticket-header">
           <div>
-            <h1 style="margin: 0;">Tickets</h1>
-            <p style="margin: 0; color: var(--muted);">Manage, triage, and resolve support tickets.</p>
+            <h1>Tickets</h1>
+            <p>Track and update the progress of every request.</p>
           </div>
-          <div style="justify-self: end;">
-            <Button v-if="!showCreate" variant="primary" type="button" @click="openCreate">Create New Ticket</Button>
-          </div>
-        </header>
+          <Button variant="primary" @click="showCreate = !showCreate">
+            {{ showCreate ? 'Close' : 'New Ticket' }}
+          </Button>
+        </div>
 
-        <div v-if="showCreate" style="margin-top: 2rem;">
+        <!-- CREATE FORM -->
+        <Card v-if="showCreate" class="ticket-form-card">
           <TicketForm
             v-model="createModel"
-            title="Create ticket"
-            :loading="creating"
             @submit="handleCreate"
+            @cancel="showCreate = false"
+            :loading="creating"
           >
             <template #submit>
               {{ creating ? 'Creating...' : 'Create Ticket' }}
             </template>
           </TicketForm>
-        </div>
-
-        <Card v-if="!hasTickets" style="margin-top: 2rem; text-align: center;">
-          <p style="margin: 0; color: var(--muted);">No tickets yet. Create your first ticket to get started.</p>
         </Card>
 
-        <div v-else style="margin-top: 2rem;">
-          <Card>
-            <div style="overflow-x: auto;">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                    <th>Updated</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="ticket in tickets" :key="ticket.id">
-                    <td style="font-weight: 600;">{{ ticket.title }}</td>
-                    <td><Badge :status="ticket.status" /></td>
-                    <td style="text-transform: capitalize;">{{ ticket.priority }}</td>
-                    <td>{{ new Date(ticket.updatedAt).toLocaleString() }}</td>
-                    <td>
-                      <div class="table-actions">
-                        <Button variant="ghost" type="button" @click="handleEdit(ticket.id)">Edit</Button>
-                        <Button variant="secondary" type="button" @click="handleDelete(ticket.id)">Delete</Button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <!-- EMPTY STATE -->
+        <Card v-else-if="!hasTickets" class="table-empty">
+          No tickets yet. Create your first ticket to get started.
+        </Card>
+
+        <!-- TICKET GRID -->
+        <div v-else class="ticket-grid">
+          <Card
+            v-for="ticket in tickets"
+            :key="ticket.id"
+            class="ticket-card"
+          >
+            <div class="ticket-top">
+              <div class="ticket-info">
+                <Badge :status="ticket.status" />
+                <h2>{{ ticket.title }}</h2>
+                <p>{{ ticket.description || 'No description provided.' }}</p>
+              </div>
+              <div class="ticket-priority">
+                <span>Priority</span>
+                <div>{{ ticket.priority }}</div>
+              </div>
+            </div>
+
+            <div class="ticket-bottom">
+              <div class="ticket-updated">
+                Updated {{ new Date(ticket.updatedAt).toLocaleString() }}
+              </div>
+              <div class="ticket-actions">
+                <Button variant="secondary" @click="handleEdit(ticket.id)">Edit</Button>
+                <Button variant="ghost" @click="handleDelete(ticket.id)">Delete</Button>
+              </div>
             </div>
           </Card>
         </div>
       </div>
-    </section>
+    </main>
   </div>
 </template>
+
