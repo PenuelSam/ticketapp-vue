@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { FiMenu, FiX, FiUser } from 'vue-icons/fi' // lucide icons also fine
 import Button from './Button.vue'
 import { useAuth } from '../features/auth/useAuth'
 
@@ -37,12 +36,13 @@ function isActive(to: string) {
       <div class="nav-brand">
         <RouterLink to="/" class="nav-logo">TicketFlow</RouterLink>
 
+        <!-- Simple text toggle instead of icons -->
         <button
           class="nav-toggle"
           @click="toggleMenu"
           aria-label="Toggle menu"
         >
-          <component :is="menuOpen ? FiX : FiMenu" size="22" />
+          {{ menuOpen ? 'Close' : 'Menu' }}
         </button>
       </div>
 
@@ -55,6 +55,7 @@ function isActive(to: string) {
           >
             Dashboard
           </RouterLink>
+
           <RouterLink
             to="/tickets"
             :class="{ active: isActive('/tickets') }"
@@ -63,9 +64,8 @@ function isActive(to: string) {
             Tickets
           </RouterLink>
 
-          <div class="nav-user">
-            <FiUser size="20" />
-          </div>
+          <!-- Removed user icon -->
+          <span class="nav-user-label">{{ session?.user?.email || 'User' }}</span>
 
           <Button variant="ghost" type="button" @click="handleLogout">
             Logout
@@ -85,3 +85,26 @@ function isActive(to: string) {
     </nav>
   </header>
 </template>
+
+<style scoped>
+.nav-user-label {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.nav-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.nav-toggle:hover {
+  background: var(--brand-soft);
+}
+</style>
