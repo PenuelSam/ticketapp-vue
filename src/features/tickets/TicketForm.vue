@@ -119,7 +119,7 @@ const heading = computed(() => props.title || 'Ticket')
 </template>
 
 <style scoped>
-/* Align status and priority side-by-side */
+
 .form-row {
   display: flex;
   gap: 1.5rem;
@@ -130,7 +130,6 @@ const heading = computed(() => props.title || 'Ticket')
   flex: 1;
 }
 
-/* Align action buttons to the right with spacing */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -138,7 +137,6 @@ const heading = computed(() => props.title || 'Ticket')
   margin-top: 1rem;
 }
 
-/* Ensure form stays visually clean */
 .field select {
   background: #f9fafb;
   border: 1px solid var(--border);

@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
 const props = defineProps({
   as: {
     type: String,
-    default: 'button' // can be 'RouterLink', 'a', etc.
+    default: 'button'
   },
   to: {
     type: [String, Object],
@@ -17,7 +17,7 @@ const props = defineProps({
   },
   variant: {
     type: String,
-    default: 'primary' // primary | secondary | ghost
+    default: 'primary' 
   },
   disabled: {
     type: Boolean,

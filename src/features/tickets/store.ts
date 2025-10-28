@@ -14,7 +14,7 @@ export interface Ticket extends TicketInput {
   updatedAt: string
 }
 
-// Load and save helpers
+
 function loadTickets(): Ticket[] {
   try {
     const raw = localStorage.getItem('ticketapp_tickets')
@@ -30,7 +30,6 @@ function saveTickets(tickets: Ticket[]) {
 }
 
 export const useTickets = defineStore('tickets', {
-  // Always return a fresh array instance (prevents stale reactive state)
   state: () => ({
     tickets: loadTickets() as Ticket[]
   }),
@@ -54,7 +53,7 @@ export const useTickets = defineStore('tickets', {
         updatedAt: now
       }
 
-      // ✅ Create a brand-new array each time (no .push)
+   
       const updated = [...(this.tickets ?? []), ticket]
       this.tickets = updated
       saveTickets(updated)
