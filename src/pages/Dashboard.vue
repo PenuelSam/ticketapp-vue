@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import Nav from '../components/Nav.vue'
+import Footer from '../components/Footer.vue'
 import Card from '../components/Card.vue'
 import Button from '../components/Button.vue'
 import { useTickets } from '../features/tickets/store'
@@ -91,6 +92,7 @@ const metrics = computed(() => {
         </section>
       </div>
     </main>
+    <Footer />
   </div>
 </template>
 

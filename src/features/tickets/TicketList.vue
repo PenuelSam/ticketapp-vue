@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import Nav from '../../components/Nav.vue'
+import Footer from '../../components/Footer.vue'
 import Card from '../../components/Card.vue'
 import Button from '../../components/Button.vue'
 import Badge from '../../components/Badge.vue'
@@ -116,7 +117,7 @@ const hasTickets = computed(() => tickets.value.length > 0)
                 <p>{{ ticket.description || 'No description provided.' }}</p>
               </div>
               <div class="ticket-priority">
-                <span>Priority</span>
+                <span>Priority:</span>
                 <div>{{ ticket.priority }}</div>
               </div>
             </div>
@@ -134,6 +135,7 @@ const hasTickets = computed(() => tickets.value.length > 0)
         </div>
       </div>
     </main>
+    <Footer />
   </div>
 </template>
 

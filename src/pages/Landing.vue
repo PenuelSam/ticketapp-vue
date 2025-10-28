@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import Nav from '../components/Nav.vue'
+import Footer from '../components/Footer.vue'
 import Button from '../components/Button.vue'
 import Card from '../components/Card.vue'
 import circleOne from '../assets/circle1.svg'
@@ -55,7 +56,7 @@ import circleTwo from '../assets/circle2.svg'
               speed. Collaborate effortlessly and keep everyone in the loop.
             </p>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-              <Button as="RouterLink" to="/auth/login" variant="primary">Log in</Button>
+              <Button class="dis-btn" as="RouterLink" to="/auth/login" variant="primary">Log in</Button>
               <Button as="RouterLink" to="/auth/signup" variant="secondary">Get started</Button>
             </div>
           </div>
@@ -100,13 +101,7 @@ import circleTwo from '../assets/circle2.svg'
           </div>
         </div>
       </section>
-
-      <!-- FOOTER -->
-      <footer>
-        <div class="container">
-          <p>© {{ new Date().getFullYear() }} TicketApp Vue. Built with Vue 3 + Vite + TypeScript.</p>
-        </div>
-      </footer>
     </main>
+    <Footer />
   </div>
 </template>

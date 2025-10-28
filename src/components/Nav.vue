@@ -21,7 +21,7 @@ function handleLogout() {
   <header class="nav">
     <nav class="navbar" aria-label="Primary navigation">
       <div class="nav-brand">
-        <RouterLink to="/" class="nav-logo">TicketFlow</RouterLink>
+        <RouterLink to="/" class="nav-logo">TicketApp</RouterLink>
 
         <button
           class="nav-toggle"
@@ -39,9 +39,9 @@ function handleLogout() {
           <RouterLink to="/tickets" @click="menuOpen = false">Tickets</RouterLink>
 
           <!-- User Icon -->
-          <div class="nav-user" title="User">
+         <!-- <div class="nav-user" title="User">
             <span style="font-size: 1rem;">👤</span>
-          </div>
+          </div> -->
 
           <Button variant="ghost" @click="handleLogout">
             Logout
@@ -51,10 +51,12 @@ function handleLogout() {
         <template v-else>
           <RouterLink
             to="/auth/login"
-            class="button button-secondary"
+            
             @click="menuOpen = false"
           >
-            Log in
+           <Button variant="ghost">
+            Login
+          </Button>
           </RouterLink>
         </template>
       </div>

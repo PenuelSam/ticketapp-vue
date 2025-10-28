@@ -24,18 +24,24 @@ const classes = computed(() =>
 </template>
 
 <style scoped>
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
 .badge-open {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--status-open);
+  background: #81c7843b;
+  color: #81c784;
 }
-
 .badge-progress {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--status-progress);
+  background: #ffc10733;
+  color: #ffc107;
 }
-
 .badge-closed {
-  background: rgba(156, 163, 175, 0.2);
-  color: var(--status-closed);
+  background: #9e9e9e27;
+  color: #9e9e9e;
 }
 </style>
