@@ -4,6 +4,9 @@ TicketApp Vue is a Vue 3 + TypeScript single-page application that mirrors the o
 experience. It offers authentication scaffolding, ticket CRUD powered by Pinia, and a polished design
 system so customer support teams can manage work effortlessly.
 
+ **Live URL:** https://ticketapp-vue-mu.vercel.app/  
+ **GitHub Repository:** https://github.com/PenuelSam/ticketapp-vue
+
 ## Overview
 
 - LocalStorage-backed authentication and ticket persistence for instant demos.
